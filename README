@@ -1,0 +1,44 @@
+libregex -- almost portable POSIX basic and extended Regular Expressions library.
+
+libregex is a small library, separate version which comes from musl libc, a
+size and memory efficient and unified libc for embedded systems and more.
+The goal of this library is to support or replace broken or missing regexp
+engines on non-compilant, embedded or size constraight systems and environments.
+
+libregex is based on TRE POSIX fully compatible regex engine.
+
+BUILDING
+
+Build with usual `make`. It will create libregex.a, which you can install anywhere, where your
+software looks for that library. To build for Android, you need to get Android NDK working,
+adjust environment to build target arch library with NDK this way (examples are given for
+host=linux-x86_64 and target=aarch64):
+
+	export PATH=path/to/NDK/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
+
+Then invoke `make` with your target triple name (example for API 21):
+
+	make CC=aarch64-linux-android21-clang
+
+This will create libregex.a targeting Android aarch64 API 21. Then, you have to install two files:
+
+	cp -a libregex.a path/to/NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/aarch64-linux-android/21/
+	cp -a regex.h path/to/NDK/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/include/
+
+Your libregex installation for target is complete. You can now build software which requires it.
+
+To install on other hosts, just copy libregex.a and regex.h into appropriate places, usually /usr/lib and /usr/include respectively.
+
+Type `make all` to build regmatch test program. You can then run it to see if libregex.a is properly working.
+It takes two arguments for test: pattern to compile for, and string to match. Example:
+
+	make all
+	./regmatch '^(a|b|)$' b
+
+It will print "matches" if string is matched by pattern, "nomatch" if it doesn't match pattern,
+or error string returned by regerror(3) in case of bad pattern or system failure.
+
+COPYRIGHT
+
+MIT License same as musl's, see COPYRIGHT file, with changes done by me.
+regmatch.c: MIT License.
