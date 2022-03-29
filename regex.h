@@ -47,6 +47,14 @@ typedef struct {
 
 #define REG_ENOSYS      -1
 
+#ifndef CHARCLASS_NAME_MAX
+#define CHARCLASS_NAME_MAX 14
+#endif
+
+#ifndef RE_DUP_MAX
+#define RE_DUP_MAX         255
+#endif
+
 int regcomp(regex_t *__restrict, const char *__restrict, int);
 int regexec(const regex_t *__restrict, const char *__restrict, size_t, regmatch_t *__restrict, int);
 void regfree(regex_t *);
